@@ -9,11 +9,15 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField] private GameObject spherePrefab;
     private int sphereCount = 30;
-    private Queue<GameObject> spherePool; 
+    private Queue<GameObject> spherePool;
 
+    //singleton to call in other scripts
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
 
@@ -26,27 +30,33 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject sphere = Instantiate(spherePrefab);
             sphere.SetActive(false);
-            spherePool.Enqueue(sphere);
+            spherePool.Enqueue(sphere); //puts instatiated deactivated sphere in the queue 
         }
     }
 
     public GameObject GetPooledSphere()
     {
-       
+        GameObject sphere = spherePool.Dequeue();
+        sphere.SetActive(true);
+        return sphere;
+
+        /*
         if (spherePool.Count > 0)
         {
             GameObject sphere = spherePool.Dequeue();
             sphere.SetActive(true);
             return sphere;
         }
-        
+
         else
         {
             GameObject sphere = Instantiate(spherePrefab);
             return sphere;
-        } 
+        }
+        */
     }
 
+    //return sphere to pooled queue
     public void ReturnSphere(GameObject sphere)
     {
         spherePool.Enqueue(sphere);
