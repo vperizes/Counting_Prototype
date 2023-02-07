@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class SphereSpawner : MonoBehaviour
 {
-    ObjectPool objectPool;
+    ObjectPool objectPool; //reference to object pool script
+    [SerializeField] float timeToSpawn = 5f; //frequncy of object spawning
+    private float timeSinceSpawn; //tracks how long since object last spawned
 
-    private float xRange = 4.0f;
-    private float zRange = 4.0f;
+    private float xRange = 9.0f;
+    private float zRange = 9.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         objectPool = ObjectPool.Instance;
-        
+
     }
 
     // Update is called once per frame
@@ -26,10 +28,15 @@ public class SphereSpawner : MonoBehaviour
     private GameObject SpawnSphere()
     {
         GameObject newSphere = objectPool.GetPooledSphere();
-        if (newSphere != null)
+        timeSinceSpawn += Time.deltaTime; //creates a timer
+
+        if (timeSinceSpawn >= timeToSpawn && newSphere != null)
         {
+
             newSphere.transform.position = RandomPos();
             newSphere.SetActive(true);
+            timeSinceSpawn = 0f; //restarts timer
+
         }
         return newSphere;
     }
