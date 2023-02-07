@@ -29,6 +29,8 @@ public class SphereSpawner : MonoBehaviour
         Vector3 randomPos = new Vector3(spawnX, 20, spawnZ);
         return randomPos;
     }
+
+    
 }
 
 
