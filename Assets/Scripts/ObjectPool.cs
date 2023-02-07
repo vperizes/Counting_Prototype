@@ -24,13 +24,18 @@ public class ObjectPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AddSpheres();
+    }
+
+    public void AddSpheres()
+    {
         spherePool = new List<GameObject>();
 
         for (int i = 0; i < sphereCount; i++)
         {
             GameObject sphere = Instantiate(spherePrefab);
             sphere.SetActive(false);
-            spherePool.Add(sphere); //puts instatiated deactivated sphere in the queue 
+            spherePool.Add(sphere); //Adds instatiated deactivated sphere to list
         }
     }
 
