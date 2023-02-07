@@ -9,7 +9,7 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField] private GameObject spherePrefab;
     private int sphereCount = 30;
-    private Queue<GameObject> spherePool;
+    private List<GameObject> spherePool;
 
     //singleton to call in other scripts
     private void Awake()
@@ -24,43 +24,30 @@ public class ObjectPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spherePool = new Queue<GameObject>();
+        spherePool = new List<GameObject>();
 
         for (int i = 0; i < sphereCount; i++)
         {
             GameObject sphere = Instantiate(spherePrefab);
             sphere.SetActive(false);
-            spherePool.Enqueue(sphere); //puts instatiated deactivated sphere in the queue 
+            spherePool.Add(sphere); //puts instatiated deactivated sphere in the queue 
         }
     }
 
     public GameObject GetPooledSphere()
     {
-        GameObject sphere = spherePool.Dequeue();
-        sphere.SetActive(true);
-        return sphere;
-
-        /*
-        if (spherePool.Count > 0)
+        for (int i = 0; i < spherePool.Count; i++)
         {
-            GameObject sphere = spherePool.Dequeue();
-            sphere.SetActive(true);
-            return sphere;
+            if (!spherePool[i].activeInHierarchy)
+            {
+                return spherePool[i];
+            }
+
         }
 
-        else
-        {
-            GameObject sphere = Instantiate(spherePrefab);
-            return sphere;
-        }
-        */
+        return null;
+
     }
 
-    //return sphere to pooled queue
-    public void ReturnSphere(GameObject sphere)
-    {
-        spherePool.Enqueue(sphere);
-        sphere.SetActive(false);
-    }
-
+ 
 }

@@ -12,23 +12,18 @@ public class Sphere : MonoBehaviour
         objectPool = ObjectPool.Instance;
     }
 
-    IEnumerator CallReturnSphere()
-    {
-        yield return new WaitForSeconds(1);
-        objectPool.ReturnSphere(gameObject);
-    }
-
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            StartCoroutine(CallReturnSphere());
-            
+            StartCoroutine(DeactivateSphere());
         }
-        else
-        {
-            return;
-        }
+
+    }
+
+    IEnumerator DeactivateSphere()
+    {
+        yield return new WaitForSeconds(2);
+        gameObject.SetActive(false);
     }
 }

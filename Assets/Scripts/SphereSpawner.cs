@@ -10,7 +10,7 @@ public class SphereSpawner : MonoBehaviour
     private float zRange = 4.0f;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         objectPool = ObjectPool.Instance;
     }
@@ -19,7 +19,12 @@ public class SphereSpawner : MonoBehaviour
     void FixedUpdate()
     {
         GameObject newSphere = objectPool.GetPooledSphere();
-        newSphere.transform.position = RandomPos();
+        if (newSphere != null)
+        {
+            newSphere.transform.position = RandomPos();
+            newSphere.SetActive(true);
+        }
+
     }
 
     private Vector3 RandomPos()
@@ -30,7 +35,8 @@ public class SphereSpawner : MonoBehaviour
         return randomPos;
     }
 
-    
+
+
 }
 
 
